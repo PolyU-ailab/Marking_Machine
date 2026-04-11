@@ -1,0 +1,34 @@
+<\begin{Question}>
+	A student puts a small metal sphere in the boiling water. After a few minutes, the sphere is quickly transferred to a polystyrene cup containing *m_v* g of water at a temperature of 20 °C. The cup of water is stirred gently and its highest temperature attained is *t_v* °C.Given: specific heat capacity of water = 4200 J kg–1 °C–1
+	
+	Estimate the heat capacity C of the metal sphere.
+<\end{Question}>
+
+<\begin{Variable}>
+	[
+		Variable,liminf,limsup
+		*t_v*,22,40
+		*m_v*,50,150
+	]
+<\end{Variable}>
+
+<\begin{Unit}>
+	J \degree C^{–1}
+<\end{Unit}>
+
+
+<\begin{Answer}>
+	[
+	
+	C (100 – *t_v*) = m_w c_w (*t_v* – 20),
+	
+	C = \frac{(*m_v* / 1000) \times 4200(*t_v* - 20 )}{100-*t_v*}
+	
+	]
+	
+<\end{Answer}>
+
+<\begin{hardness}>
+	easy,medium,hard,very_hard
+
+<\end{hardness}>

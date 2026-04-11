@@ -1,0 +1,4 @@
+A 150 W immersion heater is used to keep the water in a large beaker boiling under standard atmospheric
+pressure. In 5 minutes, 16 g of water boils away. Neglect any heat loss to surroundings.
+
+	Find the specific latent heat of vaporization of water, l. 

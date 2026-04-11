@@ -1,0 +1,33 @@
+
+
+
+<\begin{Question}>
+	A *P_v* W immersion heater is used to keep the water in a large beaker boiling under standard atmospheric pressure. In *t_v* minutes, *m_v* g of water boils away. Neglect any heat loss to surroundings.
+	
+	Find the specific latent heat of vaporization of water, l.
+<\end{Question}>
+
+<\begin{Variable}>
+	[
+		Variable,liminf,limsup
+		*P_v*,20,180
+		*t_v*,5,12
+		*m_v*,5,20
+	]
+<\end{Variable}>
+
+
+<\begin{Unit}>
+	Jkg^{-1}
+<\end{Unit}>
+
+
+<\begin{Answer}>
+	[
+	Pt = ml,
+	l = \frac{*P_v* \times ( *t_v* \times 60)}{ *m_v*/1000 }
+	]
+<\end{Answer}>
+
+
+

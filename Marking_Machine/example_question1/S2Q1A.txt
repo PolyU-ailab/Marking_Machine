@@ -1,0 +1,3 @@
+150 x 5 x 60 / 0.016
+
+the specific latent heat of vaporization of water is 2812500 J/Kg
