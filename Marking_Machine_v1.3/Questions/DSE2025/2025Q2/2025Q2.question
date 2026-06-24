@@ -1,0 +1,58 @@
+<\begin{Topic_en}>
+	A trolley is moving on a horizontal surface with a constant velocity of $ *v_t* ms^{-1} $. At time $ t = 0 s $, a small bead of mass $ 0.01 kg $  is projected upwards with a vertical speed of $ *v_b* ms^{-1} $ from a device P mounted on the trolley as shown. Neglect air resistance.
+<\end{Topic_en}>
+
+<\begin{Variable}>
+	[
+		Variable,liminf,limsup
+		*v_t*,1,5
+		*v_b*,5,20	
+	]
+<\end{Variable}>
+
+<\begin{Image_path}>
+	\documentclass{article}
+	\usepackage{tikz}
+	\usetikzlibrary{patterns, arrows.meta}
+	\pagestyle{empty}
+
+	\begin{document}
+	\begin{center}
+	\begin{tikzpicture}
+
+	\draw[thick] (0,0) -- (10,0);
+	\draw[pattern=north east lines] (0,-0.3) rectangle (10,0);
+
+	\draw[thick] (1,0.3) rectangle (3,1);
+	\draw[fill=black] (1.5,0) circle (0.2);
+	\draw[fill=black] (2.5,0) circle (0.2);
+
+	\draw[thick] (7,0.3) rectangle (9,1);
+	\draw[fill=black] (7.5,0) circle (0.2);
+	\draw[fill=black] (8.5,0) circle (0.2);
+
+	\draw[dashed] (0.5,2) -- (9.5,2);
+	\node[left] at (0.5,2) {level of projection};
+
+	\draw[dotted] (2,1) -- (2,2);
+	\draw[dotted] (8,1) -- (8,2);
+
+	\fill (2,2) circle (2pt);
+	\node[below] at (2,2) {$P$};
+
+	\draw[dashed] (8,2) circle (2pt);
+	\node[below] at (8,2) {$P$};
+
+	\draw[->] (2,2) -- (2,3);
+	\node[right] at (2,3) {$ *v_b* \,\mathrm{m\,s^{-1}}$};
+
+	\draw[->] (3,0.65) -- (4.2,0.65);
+	\node[below] at (3.6,0.65) {$ *v_t* \,\mathrm{m\,s^{-1}}$};
+
+	\draw[->] (9,0.65) -- (10.2,0.65);
+	\node[below] at (9.6,0.65) {$ *v_t* \,\mathrm{m\,s^{-1}}$};
+
+	\end{tikzpicture}
+	\end{center}
+	\end{document}
+<\end{Image_path}>

@@ -1,0 +1,26 @@
+<\begin{Question_en}>
+	(b) Estimate the heat capacity $ H $, in $J^{\circ}C^{-1}$, of the glass cup.
+	Given : specific heat capacity of water = $ 4200 J kg^{-1} {^{\circ}C^{-1}} $
+<\end{Question_en}>
+
+
+<\begin{Question_zh}>
+	
+<\end{Question_zh}>
+
+<\begin{Mark}>
+	2
+<\end{Mark}>
+
+
+<\begin{Answer}>
+	[
+	C_{c} \Delta T_{c} = E = m_{w} c_{w} \Delta T_{w},
+	C_{c}(*t_v2* - 23 ) = \frac{*m_v*}{1000} \times 4200 \times(*t_v1* - *t_v2*),
+	C_{c} = \frac{\frac{*m_v*}{1000} \times 4200 \times (*t_v1* - *t_v2*)}{(*t_v2* - 23 )}
+	]
+<\end{Answer}>
+
+<\begin{Unit}>
+	J^{\circ}C^{-1}
+<\end{Unit}>

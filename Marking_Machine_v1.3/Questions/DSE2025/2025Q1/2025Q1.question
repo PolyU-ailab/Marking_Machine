@@ -1,0 +1,18 @@
+<\begin{Topic_en}>
+	An empty glass cup is placed on a table under room temperature of $ 23^{\circ}\text{C} $. *m_v* g of water at 
+	$ *t_v1* ^{\circ}\text{C} $ is poured into the cup. After a moment, the temperature of water in the cup is found 
+	to be $ *t_v2* ^{\circ}\text{C} $
+<\end{Topic_en}>
+
+<\begin{Variable}>
+	[
+		Variable,liminf,limsup
+		*m_v*,400,600
+		*t_v1*,95,100
+		*t_v2*,70,90	
+	]
+<\end{Variable}>
+
+<\begin{Image_path}>
+	
+<\end{Image_path}>

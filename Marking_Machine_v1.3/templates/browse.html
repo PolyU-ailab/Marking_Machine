@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Browse Question Folders</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f6f8; margin: 0; padding: 0; color: #111827; }
+        .container { width: 92%; max-width: 1000px; margin: 30px auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 0 12px rgba(0,0,0,0.08); }
+        h1 { margin-top: 0; }
+        .path-box { background: #eef3ff; padding: 14px; border-radius: 8px; margin-bottom: 18px; }
+        .path-text { font-family: Consolas, monospace; color: #1f2937; margin-top: 6px; }
+        .breadcrumbs { margin-top: 10px; font-size: 14px; color: #4b5563; }
+        .breadcrumbs a { color: #2563eb; text-decoration: none; }
+        .breadcrumbs a:hover { text-decoration: underline; }
+        .toolbar { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
+        .button, .open-button { display: inline-block; padding: 10px 15px; border-radius: 8px; text-decoration: none; font-size: 15px; }
+        .button { background: #e5e7eb; color: #111827; }
+        .button:hover { background: #d1d5db; }
+        .open-button { background: #2563eb; color: white; }
+        .open-button:hover { background: #1d4ed8; }
+        .section-title { margin-top: 24px; font-weight: bold; color: #374151; }
+        .folder-list, .file-list { list-style: none; padding: 0; margin: 12px 0 0; }
+        .folder-list li, .file-list li { border: 1px solid #e5e7eb; border-radius: 8px; margin-bottom: 10px; background: #fafafa; }
+        .folder-list a { display: flex; justify-content: space-between; gap: 12px; padding: 14px; color: #111827; text-decoration: none; }
+        .folder-list a:hover { background: #f3f4f6; }
+        .badge { background: #dcfce7; color: #166534; border-radius: 999px; padding: 3px 9px; font-size: 12px; white-space: nowrap; }
+        .file-list li { padding: 10px 14px; font-family: Consolas, monospace; color: #374151; }
+        .empty, .error { padding: 14px; border-radius: 8px; margin-top: 12px; }
+        .empty { background: #fff7ed; color: #9a3412; }
+        .error { background: #fee2e2; color: #991b1b; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Browse Question Folders</h1>
+        {% if error %}<div class="error">{{ error }}</div>{% endif %}
+        <div class="path-box">
+            <strong>Current folder:</strong>
+            <div class="path-text">{{ display_path }}</div>
+            <div class="breadcrumbs">
+                <a href="/browse">Questions</a>
+                {% for crumb in breadcrumbs %}/ <a href="/browse/{{ crumb.path }}">{{ crumb.name }}</a>{% endfor %}
+            </div>
+        </div>
+        <div class="toolbar">
+            {% if parent_path is not none %}<a class="button" href="/browse/{{ parent_path }}">← Parent folder</a>{% endif %}
+            {% if can_open %}<a class="open-button" href="/?set={{ current_set|urlencode }}">Open this question set</a>{% endif %}
+        </div>
+        {% if can_open %}
+            <div class="section-title">.question files in this folder</div>
+            <ul class="file-list">{% for file in question_files %}<li>{{ file }}</li>{% endfor %}</ul>
+        {% endif %}
+        <div class="section-title">Folders</div>
+        {% if folders|length == 0 %}
+            <div class="empty">No subfolders found here.</div>
+        {% else %}
+            <ul class="folder-list">
+                {% for folder in folders %}
+                    <li><a href="/browse/{{ folder.path }}"><span>📁 {{ folder.name }}</span>{% if folder.has_question_files %}<span class="badge">contains .question</span>{% endif %}</a></li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        {% if not can_open and folders|length == 0 %}<div class="empty">This folder does not contain any .question files.</div>{% endif %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ paper_title }}</title>
+
+    <!-- Markdown support -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <!-- MathJax support -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\$', '\\$']],
+                displayMath: [['$$', '$$'], ['\\$$', '\\$$']]
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            margin: 0;
+            padding: 0;
+            color: #111827;
+        }
+
+        .container {
+            width: 92%;
+            max-width: 1100px;
+            margin: 30px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 0 12px rgba(0,0,0,0.08);
+        }
+
+        h1 {
+            margin-top: 0;
+            color: #222;
+        }
+
+        .topic {
+            color: #555;
+            margin-bottom: 25px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #e2e2e2;
+            line-height: 1.7;
+        }
+
+        .topic-images {
+            margin-top: 18px;
+        }
+
+        .topic-image-title {
+            font-weight: bold;
+            color: #111827;
+            margin-bottom: 8px;
+        }
+
+        .selector-box {
+            background: #eef3ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+
+        label,
+        .label {
+            font-weight: bold;
+        }
+
+        select {
+            padding: 8px 12px;
+            font-size: 15px;
+            margin-left: 10px;
+        }
+
+        .selected-set {
+            margin: 8px 0 12px;
+            font-family: Consolas, monospace;
+            color: #1f2937;
+        }
+
+        .browse-link {
+            display: inline-block;
+            padding: 9px 14px;
+            border-radius: 8px;
+            background: #4b5563;
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .browse-link:hover {
+            background: #374151;
+        }
+
+        .question-card {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 18px;
+            margin-bottom: 22px;
+            background: #fafafa;
+        }
+
+        .question-header {
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #111;
+        }
+
+        .marks {
+            color: #0066cc;
+            font-weight: bold;
+        }
+
+        .question-text {
+            white-space: pre-wrap;
+            background: white;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #e2e2e2;
+            margin-bottom: 15px;
+            line-height: 1.5;
+            font-size: 17px;
+        }
+
+        .question-image {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 12px;
+            margin: 12px 0 18px;
+            text-align: center;
+        }
+
+        .question-image img {
+            max-width: 100%;
+            height: auto;
+            display: inline-block;
+        }
+
+        .image-error {
+            display: none;
+            color: #991b1b;
+            background: #fee2e2;
+            padding: 10px;
+            border-radius: 6px;
+            margin-top: 8px;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 120px;
+            resize: vertical;
+            padding: 12px;
+            font-size: 15px;
+            border-radius: 8px;
+            border: 1px solid #bbb;
+            box-sizing: border-box;
+        }
+
+        .math-textarea {
+            height: 230px;
+            font-family: Consolas, monospace;
+        }
+
+        .normal-textarea {
+            height: 150px;
+            font-family: Arial, sans-serif;
+        }
+
+        .checker {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-top: 20px;
+        }
+
+        .preview {
+            min-height: 230px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 12px;
+            background: #fafafa;
+            overflow-x: auto;
+        }
+
+        .hint {
+            color: #6b7280;
+            font-size: 14px;
+            margin-top: 6px;
+        }
+
+        .math-note {
+            margin-top: 8px;
+            color: #b45309;
+            font-size: 14px;
+            background: #fff7ed;
+            padding: 8px;
+            border-radius: 6px;
+        }
+
+        .button-row {
+            display: flex;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        button {
+            padding: 12px 18px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        #submitBtn {
+            background: #2563eb;
+            color: white;
+        }
+
+        #submitBtn:hover {
+            background: #1d4ed8;
+        }
+
+        #submitBtn:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+        }
+
+        #clearBtn {
+            background: #e5e7eb;
+            color: #111;
+        }
+
+        #clearBtn:hover {
+            background: #d1d5db;
+        }
+
+        #downloadBtn {
+            background: #059669;
+            color: white;
+            display: none;
+        }
+
+        #downloadBtn:hover {
+            background: #047857;
+        }
+
+        #report {
+            margin-top: 30px;
+            background: #111827;
+            color: #f9fafb;
+            padding: 20px;
+            border-radius: 10px;
+            white-space: pre-wrap;
+            overflow-x: auto;
+            font-family: Consolas, monospace;
+            display: none;
+        }
+
+        .loading {
+            margin-top: 20px;
+            color: #2563eb;
+            font-weight: bold;
+            display: none;
+        }
+
+        .error {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .no-questions {
+            padding: 20px;
+            background: #fff7ed;
+            border-radius: 8px;
+            color: #9a3412;
+        }
+
+        @media (max-width: 900px) {
+            .checker {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                width: 94%;
+                margin: 20px auto;
+                padding: 18px;
+            }
+
+            .button-row {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>{{ paper_title }}</h1>
+
+        <div class="topic">
+            <strong>Topic:</strong>
+            <div id="topic-content"></div>
+
+            {% if questions|selectattr("has_image")|list|length > 0 %}
+                <div class="topic-images">
+                    <div class="topic-image-title">Question Images:</div>
+
+                    {% for q in questions %}
+                        {% if q.has_image %}
+                            <div class="question-image">
+                                <img
+                                    src="{{ q.image_url }}"
+                                    alt="Question {{ q.number }} image"
+                                    loading="lazy"
+                                    style="max-width: 100%; height: auto;"
+                                    onload="
+                                        const ok = document.getElementById('image-ok-{{ q.index }}');
+                                        if (ok) ok.style.display='block';
+                                    "
+                                    onerror="
+                                        this.style.display='none';
+                                        const err = document.getElementById('image-error-{{ q.index }}');
+                                        if (err) err.style.display='block';
+                                    "
+                                >
+
+                                <div
+                                    id="image-ok-{{ q.index }}"
+                                    style="display:none; color:#059669; font-size:13px; margin-top:6px;"
+                                >
+                                    Image loaded.
+                                </div>
+
+                                <div
+                                    class="image-error"
+                                    id="image-error-{{ q.index }}"
+                                    style="display:none;"
+                                >
+                                    Could not render this question image.
+                                    Open this URL directly to see the LaTeX error:
+                                    <br>
+                                    <a href="{{ q.image_url }}" target="_blank">
+                                        {{ q.image_url }}
+                                    </a>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="selector-box">
+            <div class="label">Selected Question Set:</div>
+            <div class="selected-set">{{ selected_set or "Questions" }}</div>
+            <a class="browse-link" href="{{ url_for('browse') }}">Browse folders</a>
+        </div>
+
+        {% if questions|length == 0 %}
+            <div class="no-questions">
+                No questions available.
+            </div>
+        {% endif %}
+
+        {% for q in questions %}
+            <div class="question-card">
+                <div class="question-header">
+                    Question {{ q.number }}
+                    <span class="marks">({{ q.mark }} marks)</span>
+                </div>
+
+                <div
+                    class="question-text"
+                    id="question-content-{{ q.index }}"
+                ></div>
+
+                {% if q.is_math_checker %}
+                    <div class="checker">
+                        <div>
+                            <div class="label">
+                                Your LaTeX solution steps
+                            </div>
+
+                            <textarea
+                                id="answer-{{ q.index }}"
+                                class="answer-box math-textarea"
+                                data-index="{{ q.index }}"
+                                data-type="{{ q.answer_type }}"
+                                oninput="updatePreview({{ q.index }})"
+                                placeholder="Type one LaTeX step per line..."
+                            ></textarea>
+
+                            <div class="hint">
+                                Enter one mathematical step per line.
+                            </div>
+
+                            <div class="math-note">
+                                This question uses the math step checker.
+                                Please enter each LaTeX step on a separate line.
+                                At least two steps are required.
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="label">
+                                Live Preview
+                            </div>
+
+                            <div
+                                class="preview"
+                                id="preview-{{ q.index }}"
+                            ></div>
+                        </div>
+                    </div>
+                {% else %}
+                    <label for="answer-{{ q.index }}">Your Answer:</label>
+
+                    <textarea
+                        id="answer-{{ q.index }}"
+                        class="answer-box normal-textarea"
+                        data-index="{{ q.index }}"
+                        data-type="{{ q.answer_type }}"
+                        placeholder="Type your answer here..."
+                    ></textarea>
+                {% endif %}
+            </div>
+        {% endfor %}
+
+        {% if questions|length > 0 %}
+            <div class="button-row">
+                <button id="submitBtn" onclick="submitAll()">
+                    Submit All
+                </button>
+
+                <button id="clearBtn" onclick="clearAnswers()">
+                    Clear Answers
+                </button>
+
+                <button id="downloadBtn" onclick="downloadReport()">
+                    Download Report
+                </button>
+            </div>
+        {% endif %}
+
+        <div id="loading" class="loading">
+            Marking in progress. Please wait...
+        </div>
+
+        <div id="errorBox" class="error"></div>
+
+        <pre id="report"></pre>
+    </div>
+
+    <script>
+        const SELECTED_QUESTION_SET = {{ selected_set | tojson }};
+        const topicMarkdown = {{ topic | tojson }};
+        const questions = {{ questions | tojson }};
+
+        let latestReportText = "";
+
+        function escapeHtml(text) {
+            return String(text)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;");
+        }
+
+        async function typesetElement(element) {
+            if (window.MathJax && MathJax.typesetPromise) {
+                try {
+                    await MathJax.typesetPromise(element ? [element] : undefined);
+                } catch (error) {
+                    console.error("MathJax error:", error);
+                }
+            }
+        }
+
+        async function typesetPage() {
+            if (window.MathJax && MathJax.typesetPromise) {
+                try {
+                    await MathJax.typesetPromise();
+                } catch (error) {
+                    console.error("MathJax page error:", error);
+                }
+            }
+        }
+
+        function renderMarkdownWithMath(element, markdownText) {
+            if (!element) return;
+
+            if (window.marked) {
+                element.innerHTML = marked.parse(markdownText || "");
+            } else {
+                element.textContent = markdownText || "";
+            }
+        }
+
+        async function updatePreview(index) {
+            const input = document.getElementById(`answer-${index}`);
+            const preview = document.getElementById(`preview-${index}`);
+
+            if (!input || !preview) return;
+
+            const lines = input.value
+                .split("\n")
+                .filter(line => line.trim() !== "");
+
+            preview.innerHTML = lines
+                .map(line => `<div>\\[${escapeHtml(line)}\\]</div>`)
+                .join("");
+
+            await typesetElement(preview);
+        }
+
+        async function submitAll() {
+            const submitBtn = document.getElementById("submitBtn");
+            const loading = document.getElementById("loading");
+            const report = document.getElementById("report");
+            const errorBox = document.getElementById("errorBox");
+            const downloadBtn = document.getElementById("downloadBtn");
+
+            errorBox.style.display = "none";
+            errorBox.textContent = "";
+
+            report.style.display = "none";
+            report.textContent = "";
+
+            downloadBtn.style.display = "none";
+            latestReportText = "";
+
+            const answerBoxes = document.querySelectorAll(".answer-box");
+            const submissions = [];
+
+            answerBoxes.forEach(box => {
+                submissions.push({
+                    index: parseInt(box.dataset.index),
+                    type: box.dataset.type,
+                    answer: box.value
+                });
+            });
+
+            /*
+                Empty string "" is valid when the root Questions/
+                folder itself is the selected question set.
+                So do not reject "" here.
+            */
+            if (SELECTED_QUESTION_SET === null || SELECTED_QUESTION_SET === undefined) {
+                errorBox.textContent = "No question set selected.";
+                errorBox.style.display = "block";
+                return;
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = "Processing...";
+            loading.style.display = "block";
+
+            try {
+                const response = await fetch("/submit_all", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        question_set: SELECTED_QUESTION_SET,
+                        submissions: submissions
+                    })
+                });
+
+                const data = await response.json();
+
+                if (!data.ok) {
+                    errorBox.textContent = data.error || "Unknown error.";
+                    errorBox.style.display = "block";
+                } else {
+                    latestReportText = data.report || "";
+
+                    report.textContent = latestReportText;
+                    report.style.display = "block";
+
+                    downloadBtn.style.display = "inline-block";
+
+                    downloadReport();
+                }
+
+            } catch (err) {
+                errorBox.textContent = "Request failed: " + err;
+                errorBox.style.display = "block";
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = "Submit All";
+                loading.style.display = "none";
+            }
+        }
+
+        function downloadReport() {
+            if (!latestReportText) return;
+
+            const blob = new Blob([latestReportText], {
+                type: "text/plain"
+            });
+
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement("a");
+
+            a.style.display = "none";
+            a.href = url;
+            a.download = "Marking_Report.txt";
+
+            document.body.appendChild(a);
+            a.click();
+
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        }
+
+        function clearAnswers() {
+            const answerBoxes = document.querySelectorAll(".answer-box");
+
+            answerBoxes.forEach(box => {
+                box.value = "";
+            });
+
+            questions.forEach(q => {
+                if (q.is_math_checker) {
+                    const preview = document.getElementById(`preview-${q.index}`);
+                    if (preview) {
+                        preview.innerHTML = "";
+                    }
+                }
+            });
+
+            const report = document.getElementById("report");
+            const errorBox = document.getElementById("errorBox");
+            const downloadBtn = document.getElementById("downloadBtn");
+
+            report.style.display = "none";
+            report.textContent = "";
+
+            errorBox.style.display = "none";
+            errorBox.textContent = "";
+
+            downloadBtn.style.display = "none";
+
+            latestReportText = "";
+        }
+
+        window.addEventListener("load", async () => {
+            const topicElement = document.getElementById("topic-content");
+            renderMarkdownWithMath(topicElement, topicMarkdown);
+
+            questions.forEach(q => {
+                const questionElement = document.getElementById(`question-content-${q.index}`);
+                renderMarkdownWithMath(questionElement, q.question || "");
+            });
+
+            await typesetPage();
+
+            questions.forEach(q => {
+                if (q.is_math_checker) {
+                    updatePreview(q.index);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
