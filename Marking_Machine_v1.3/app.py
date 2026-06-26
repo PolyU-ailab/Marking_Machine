@@ -49,6 +49,65 @@ def normalize_question_set(question_set):
     return str(question_set)
 
 
+def clean_latex_answer(text):
+    """
+    Clean submitted LaTeX answer from Live Preview.
+
+    Removes display/inline math wrappers such as:
+        \\[ ... \\]
+        \\( ... \\)
+        $$ ... $$
+
+    Supports both:
+        \\[x = 1\\]
+        \\[x = 1
+        y = 2\\]
+
+    Also preserves multi-line math steps for MathStepVerifier.
+    """
+    if text is None:
+        return ""
+
+    text = str(text).strip()
+
+    # Normalize line endings
+    text = text.replace("\r\n", "\n").replace("\r", "\n")
+
+    # Remove whole-block wrappers first
+    if text.startswith(r"\[") and text.endswith(r"\]"):
+        text = text[2:-2].strip()
+
+    if text.startswith(r"\(") and text.endswith(r"\)"):
+        text = text[2:-2].strip()
+
+    if text.startswith("$$") and text.endswith("$$"):
+        text = text[2:-2].strip()
+
+    cleaned_lines = []
+
+    for line in text.split("\n"):
+        line = line.strip()
+
+        # Remove single-line wrappers
+        if line.startswith(r"\[") and line.endswith(r"\]"):
+            line = line[2:-2].strip()
+
+        elif line.startswith(r"\(") and line.endswith(r"\)"):
+            line = line[2:-2].strip()
+
+        elif line.startswith("$$") and line.endswith("$$"):
+            line = line[2:-2].strip()
+
+        # Remove leftover standalone delimiters
+        if line in [r"\[", r"\]", r"\(", r"\)", "$$"]:
+            continue
+
+        if line:
+            cleaned_lines.append(line)
+
+    return "\n".join(cleaned_lines).strip()
+
+
 def prune_paper_cache():
     """
     Prevent the temporary paper cache from growing forever.
@@ -806,7 +865,11 @@ def submit_all():
             report_lines.append(f"Invalid question index: {q_idx}")
             continue
 
-        user_ans = str(sub.get("answer", "")).strip()
+        # IMPORTANT:
+        # Clean Live Preview output here.
+        # This removes wrappers like \[ ... \] before sending to verifier/VLM.
+        raw_user_ans = sub.get("answer", "")
+        user_ans = clean_latex_answer(raw_user_ans)
 
         q_text = questions[q_idx]
         model_ans = answers[q_idx] if q_idx < len(answers) else ""

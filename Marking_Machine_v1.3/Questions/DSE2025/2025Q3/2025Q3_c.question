@@ -1,0 +1,25 @@
+<\begin{Question_en}>
+	 (c) Find the magnitude of the net force acting on the object at $ t = 4s $. The mass of the object is $ 0.4 kg $
+<\end{Question_en}>
+
+
+<\begin{Mark}>
+	2
+<\end{Mark}>
+
+
+<\begin{Answer}>
+	[
+    \begin{cases} F = 0.4(\frac{dv}{dt}) \\ \frac{dv}{dt} = \frac{(15 - (-10))}{10 - 0}    \end{cases},
+	\begin{cases} F = 0.4(\frac{dv}{dt}) \\ \frac{dv}{dt} = 2.5    \end{cases},
+	\begin{cases} F = 0.4(2.5) = 1 \\ \frac{dv}{dt} = 2.5    \end{cases}
+    ]
+<\end{Answer}>
+
+<\begin{Unit}>
+	N
+<\end{Unit}>
+
+
+
+

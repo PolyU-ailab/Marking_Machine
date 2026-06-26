@@ -1,0 +1,90 @@
+<\begin{Topic_en}>
+	An object $ K $ moving on a horizontal surface is acted upon by a horizontal constant net force (not drawn on the diagram) such that it passes point at time $ t = 0 s $ as shown in Figure 3.1 . Its velocity-time graph is shown below, taking to the right as positive(+)
+<\end{Topic_en}>
+
+<\begin{Variable}>
+	[
+		Variable,liminf,limsup
+			
+	]
+<\end{Variable}>
+
+<\begin{Image_path}>
+	\documentclass{article}
+
+	\usepackage{pgfplots}
+	\pgfplotsset{compat=1.18}
+	\usepackage{amsmath}
+
+	\begin{document}
+	
+		\begin{center}
+			\begin{tikzpicture}
+			
+				% Horizontal surface
+				\draw[thick] (-6,0) -- (6,0);
+			
+				% Rough texture (optional hatch effect)
+				\foreach \x in {-5.8,-5.6,...,5.8} {
+				\draw[gray, thin] (\x,0.05) -- (\x+0.2,0);
+				}
+			
+				% Origin O
+				\node at (0,-0.4) {$O$};
+			
+				% Block K
+				\draw[thick] (-0.5,0) rectangle (0.5,1);
+				\node at (0,0.5) {$K$};
+			
+				% Time label
+				\node at (0,1.4) {$t = 0\ \text{s}$};
+			
+				% Labels for directions
+				\node at (-5.5,-0.4) {left $(-)$};
+				\node at (5.5,-0.4) {right $(+)$};
+			
+				% Label for surface
+				\node at (3,0.6) {horizontal surface};
+			
+				% Figure label
+				\node at (-6,1.2) {Figure 3.1};
+			
+			\end{tikzpicture}
+		\end{center}
+	
+	\vspace{1cm}
+	
+		\begin{center}
+			\begin{tikzpicture}
+			
+			
+				\begin{axis}[
+				width=12cm,
+				height=8cm,
+				xmin=0, xmax=10,
+				ymin=-15, ymax=20,
+				axis lines=middle,
+				xlabel={time / s},
+				ylabel={velocity / m s$^{-1}$},
+				grid=both,
+				major grid style={line width=0.3pt, draw=gray!70},
+				minor grid style={line width=0.1pt, draw=gray!30},
+				xtick={0,1,...,10},
+				ytick={-15,-10,-5,0,5,10,15,20},
+				minor tick num=4
+				]
+				
+				% Velocity-time line
+				\addplot[
+				domain=0:10,
+				samples=100,
+				thick
+				]
+				{2.5*x - 10};
+				
+				\end{axis}
+			\end{tikzpicture}
+		\end{center}
+	
+	\end{document}
+<\end{Image_path}>
