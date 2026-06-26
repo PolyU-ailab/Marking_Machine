@@ -11,7 +11,7 @@ from vllm import LLM, SamplingParams
 from flask import Flask, render_template, request, jsonify, redirect, url_for, Response
 
 from questionreader import Readquestion
-from mathverifier import MathStepVerifier
+from mathverifier import MathStepVerifier, format_results
 
 
 app = Flask(__name__)
@@ -910,6 +910,24 @@ def submit_all():
                     report_lines.append(
                         f"Step {r.step_index}: {status} | {r.reason}"
                     )
+
+                # ====================== FORMAT_RESULTS OUTPUT ======================
+                # This uses the format_results function imported from questionreader.py.
+                # It prints the full formatted validation result into the final report.
+                try:
+                    formatted_results = format_results(results, show_details=True)
+
+                    report_lines.append("")
+                    report_lines.append("[Math Verifier Formatted Results]:")
+                    report_lines.append(str(formatted_results))
+                    report_lines.append("")
+
+                except Exception as e:
+                    report_lines.append("")
+                    report_lines.append(
+                        f"[Math Verifier Formatted Results Error]: {str(e)}"
+                    )
+                    report_lines.append("")
 
                 if all_valid:
                     report_lines.append(
